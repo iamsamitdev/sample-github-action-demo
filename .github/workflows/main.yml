@@ -184,22 +184,22 @@ jobs:
       
       # Step 2: Deploy notification
       - name: 🚀 Deploy notification
-        shell: pwsh
+        shell: bash
         run: |
           echo "Deploying application..."
           echo "Image: ${{ env.DOCKER_IMAGE }}:latest"
           echo "Environment: production"
       
       - name: 🐳 Deploy with Docker
-        shell: pwsh
+        shell: bash
         run: |
-            docker pull ${{ env.DOCKER_IMAGE }}:latest
-            docker stop express-app-action -ErrorAction SilentlyContinue
-            docker rm express-app-action -ErrorAction SilentlyContinue
-            docker run -d --name express-app-action -p 3000:3000 ${{ env.DOCKER_IMAGE }}:latest
-            docker ps --filter name=express-app-action
+          docker pull ${{ env.DOCKER_IMAGE }}:latest
+          docker stop express-app-action || true
+          docker rm express-app-action || true
+          docker run -d --name express-app-action -p 3000:3000 ${{ env.DOCKER_IMAGE }}:latest
+          docker ps --filter name=express-app-action
       
       # Step 4: Success notification
       - name: ✅ Deployment complete
-        shell: pwsh
+        shell: bash
         run: echo "Application deployed successfully!"
